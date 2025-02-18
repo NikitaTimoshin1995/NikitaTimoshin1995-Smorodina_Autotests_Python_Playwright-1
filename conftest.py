@@ -1,8 +1,6 @@
-from dotenv import load_dotenv
+# conftest.py
+from playwright.sync_api import sync_playwright
 
-load_dotenv()
-
-pytest_plugins = [
-    'fixtures.page'
-]
-
+def pytest_configure(config):
+    if config.getoption("--headed"):
+        config.option.headless = False
