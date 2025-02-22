@@ -1,3 +1,36 @@
+import pytest
+from playwright.sync_api import Page
+
+@pytest.fixture
+def intercept_requests(page: Page) -> list:
+    request_statuses = []
+
+    # Функция для обработки запросов
+    def handle_request(route):
+        route.continue_()  # Продолжаем выполнение запроса
+        if route.response:  # Если ответ существует
+            request_statuses.append(route.response.status)  # Сохраняем статус ответа
+
+    # Начинаем перехват запросов
+    page.on("route", handle_request)
+
+    # Используем yield для возврата значений из фикстуры
+    yield request_statuses  # Возвращает список статусов
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
 # import pytest
 # from playwright.sync_api import Browser, BrowserContext, Page, sync_playwright
 # import os

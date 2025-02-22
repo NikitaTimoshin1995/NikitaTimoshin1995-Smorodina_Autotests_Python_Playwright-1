@@ -1,11 +1,7 @@
-from playwright.sync_api import sync_playwright
+import pytest
+from playwright.sync_api import Page, expect
 
-def test_example():
-    with sync_playwright() as p:
-        for browser_type in [p.chromium, p.firefox, p.webkit]:
-            browser = browser_type.launch(headless=False)
-            page = browser.new_page()
-            page.goto("https://example.com")
-            print(f"{browser_type.name}: {page.title()}")
-            assert page.title() == "Example Domain"
-            browser.close()
+def test_example(page: Page):
+    page.goto('https://dev.smorodina.ru/')
+    page.get_by_role('button', name='Искать туры').click()  # Исправлено здесь
+    expect(page.get_by_text('Автопутешествия по России')).to_be_visible()

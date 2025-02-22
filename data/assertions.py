@@ -1,3 +1,73 @@
+from playwright.sync_api import Page, expect
+
+
+class Assertions:
+    # def __init__(self, page: Page) -> None:
+    #     self.page = page
+
+    # def check_URL(self, uri, msg):
+    #     expect(self.page).to_have_url(f"{host.get_base_url()}{uri}", timeout=10000), msg
+
+    # def have_text(self, locator, text: str, msg):
+    #     loc = self.page.locator(locator)
+    #     expect(loc).to_have_text(text), msg
+
+    # def check_presence(self, locator, msg):
+    #     loc = self.page.locator(locator)
+    #     expect(loc).to_be_visible(visible=True, timeout=12000), msg
+    
+    # def check_absence(self, locator, msg):
+    #     loc = self.page.locator(locator)
+    #     expect(loc).to_be_hidden(timeout=700), msg
+
+    # def check_equals(self, actual, expected, msg):
+    #     assert actual == expected, msg
+
+    # def check_is_less_than(self, first, second, msg):
+    #     assert first < second, msg
+
+    # def button_is_disabled(self, locator: str) -> bool:
+    #     button = self.page.query_selector(locator)
+    #     return button.is_disabled()
+
+    # def check_url_content(self, uri, msg):
+    #     assert f"{uri}" in self.page.url, msg
+
+    # def check_box_activated(self, locator, msg):
+    #     loc = self.page.locator(locator)
+    #     expect(loc).to_be_checked(), msg
+
+    # def element_disabled(self, locator, msg):
+    #     loc = self.page.locator(locator)
+    #     expect(loc).to_be_disabled(), msg
+
+    # def to_be_editable(self, locator, msg):
+    #     loc = self.page.locator(locator)
+    #     expect(loc).to_be_editable(), msg
+
+    # def to_be_empty(self, locator, msg):
+    #     loc = self.page.locator(locator)
+    #     expect(loc).to_be_empty(), msg
+
+    # def contain_text(self, locator, text: str, msg):
+    #     loc = self.page.locator(locator)
+    #     expect(loc).to_contain_text(text), msg
+
+    # def select_have_values(self, locator, options: list, msg):
+    #     loc = self.page.locator(locator)
+    #     loc.select_option(options)
+    #     expect(loc).to_have_values(options), msg
+    
+    def assert_request_statuses(self, request_statuses, expected_status=200):
+        """ Проверяет, что все собранные статусы равны ожидаемому. """
+        assert all(status == expected_status for status in request_statuses), \
+            f"Найдены статусы: {request_statuses}"
+
+
+
+
+
+
 # from playwright.sync_api import Page
 # from data.environment import host
 # from playwright.sync_api import expect
