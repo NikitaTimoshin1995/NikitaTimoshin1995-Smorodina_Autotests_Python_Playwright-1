@@ -6,7 +6,7 @@ on:
       deployment_target:
         description: Chose target
         required: true
-        default:
+        default: "all"
         type: choice
         options:
           - all
