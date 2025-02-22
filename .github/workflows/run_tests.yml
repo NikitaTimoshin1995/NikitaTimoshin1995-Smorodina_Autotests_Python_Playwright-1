@@ -29,9 +29,9 @@ jobs:
       - name: Install brousers for playwright
         run: playwright install --with-deps
       - name: all
-        if: "github.event.inputs.deployment_target == 'all'"
+        if: github.event.inputs.deployment_target == 'all'
         run: pytest
       - name: client
-        if: "github.event.inputs.deployment_target == 'client'"
+        if: github.event.inputs.deployment_target == 'client'
         run: pytest tests/client/
 
