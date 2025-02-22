@@ -1,7 +1,17 @@
 name: Automated tests
 
 on:
-  push
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: Chose target
+        required: true
+        default:
+        type: choice
+        options:
+          - all
+          - client
+
 
 jobs:
   test: 
@@ -18,6 +28,10 @@ jobs:
         run: pip install -r requirements.txt
       - name: Install brousers for playwright
         run: playwright install --with-deps
-      - name: Run tests
+      - name: all
+        if: "github.event.inputs.deployment_target == 'all'"
         run: pytest
+      - name: client
+        if: "github.event.inputs.deployment_target == 'client'"
+        run: pytest tests/client/
 
