@@ -16,6 +16,8 @@ jobs:
           python-version: "3.13.2"
       - name: install dependencies
         run: pip install -r requirements.txt
+      - name: Install brousers for playwright
+        run: python -m playwright install --with-deps
       - name: Run tests
         run: pytest
 
