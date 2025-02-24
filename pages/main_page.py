@@ -1,17 +1,31 @@
-# from pages.base import Base
-# from data.constants import Constants
-# from Locators.auth import Auth
-# from data.assertions import Assertions
-# from playwright.sync_api import Page
+import allure
+from pages.base import BasePage
 
-# class Main(Base):
-#     def __init__(self, page: Page) -> None:
-#         super().__init__(page)
-#         self.assertion = Assertions(page)
-
-#     def user_login(self):
-#         self.open("")
-#         self.input(Auth.USERNAME_INPUT, Constants.login)
-#         self.input(Auth.PASSWORD_INPUT, Constants.password)
-#         self.click(Auth.LOGIN_BTN)
-#         self.assertion.check_URL("inventory.html", "Wrong URL")
+class MainPage(BasePage):
+    @allure.step("Нажать кнопку 'Искать туры'")
+    def click_search_tours(self):
+        self.page.get_by_role('button', name='Искать туры').click()
+    
+    @allure.step("Нажать кнопку 'Войти'")
+    def click_login(self):
+        self.page.get_by_role('button', name='Войти').click()
+    
+    @allure.step("Нажать 'Организатор туров'")
+    def click_tour_organizer(self):
+        self.page.locator('//h4[text()="Организатор туров"]').click()
+    
+    @allure.step("Ввести email")
+    def fill_email(self, email):
+        self.page.fill('input[placeholder="email"]', email)
+    
+    @allure.step("Ввести пароль")
+    def fill_password(self, password):
+        self.page.fill('input[placeholder="пароль"]', password)
+    
+    @allure.step("Нажать кнопку 'Войти'")
+    def submit_login(self):
+        self.page.click('button[type="submit"]')
+    
+    @allure.step("Проверка URL")
+    def check_url(self, expected_url):
+        return self.page.url == expected_url

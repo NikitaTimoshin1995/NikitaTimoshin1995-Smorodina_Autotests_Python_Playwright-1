@@ -1,126 +1,26 @@
 import pytest
-from playwright.sync_api import Page
+from playwright.sync_api import sync_playwright
+from data.constants import URL
+
+@pytest.fixture(scope="session")
+def browser():
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        yield browser
+        browser.close()
+
+@pytest.fixture(scope="function")
+def page(browser):
+    """Фикстура для создания новой страницы Playwright."""
+    page = browser.new_page()
+    page.goto(URL)
+    yield page
+    page.close()
 
 @pytest.fixture
-def intercept_requests(page: Page) -> list:
-    request_statuses = []
-
-    # Функция для обработки запросов
-    def handle_request(route):
-        route.continue_()  # Продолжаем выполнение запроса
-        if route.response:  # Если ответ существует
-            request_statuses.append(route.response.status)  # Сохраняем статус ответа
-
-    # Начинаем перехват запросов
-    page.on("route", handle_request)
-
-    # Используем yield для возврата значений из фикстуры
-    yield request_statuses  # Возвращает список статусов
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-# import pytest
-# from playwright.sync_api import Browser, BrowserContext, Page, sync_playwright
-# import os
-
-
-
-# def pytest_addoption(parser):
-#     """Пользовательские опции командной строки"""
-#     parser.addoption('--bn', action='store', default="chrome", help="Choose browser: chrome, remote_chrome or firefox")
-#     parser.addoption('--h', action='store', default=False, help='Choose headless: True or False')
-#     parser.addoption('--s', action='store', default={'width': 1920, 'height': 1080}, help='Size window: width,height')
-#     parser.addoption('--slow', action='store', default=200, help='Choose slow_mo for robot action')
-#     parser.addoption('--t', action='store', default=60000, help='Choose timeout')
-#     parser.addoption('--l', action='store', default='ru-RU', help='Choose locale')
-#     # parser.addini('qs_to_api_token', default=os.getenv("QASE_TOKEN"), help='Qase app token')
-
-
-
-# @pytest.fixture(scope='class')
-# def browser(request) -> Page:
-#     playwright = sync_playwright().start()
-#     if request.config.getoption("bn") == 'remote_chrome':
-#         browser = get_remote_chrome(playwright, request)
-#         context = get_context(browser, request, 'remote')
-#         page_data = context.new_page()
-#     elif request.config.getoption("bn") == 'firefox':
-#         browser = get_firefox_browser(playwright, request)
-#         context = get_context(browser, request, 'local')
-#         page_data = context.new_page()
-#     elif request.config.getoption("bn") == 'chrome':
-#         browser = get_chrome_browser(playwright, request)
-#         context = get_context(browser, request, 'local')
-#         page_data = context.new_page()
-#     else:
-#         browser = get_chrome_browser(playwright, request)
-#         context = get_context(browser, request, 'local')
-#         page_data = context.new_page()
-#     yield page_data
-#     for context in browser.contexts:
-#         context.close()
-#     browser.close()
-#     playwright.stop()
-
-
-# def get_firefox_browser(playwright, request) -> Browser:
-#     return playwright.firefox.launch(
-#         headless=request.config.getoption("h"),
-#         slow_mo=request.config.getoption("slow"),
-#     )
-
-
-# def get_chrome_browser(playwright, request) -> Browser:
-#     return playwright.chromium.launch(
-#         headless=request.config.getoption("h"),
-#         slow_mo=request.config.getoption("slow"),
-#         args=['--start-maximized']
-#     )
-
-# def get_remote_chrome(playwright, request) -> Browser:
-#     return playwright.chromium.launch(
-#         headless=True,
-#         slow_mo=request.config.getoption("slow")
-#     )
-
-
-# def get_context(browser, request, start) -> BrowserContext:
-#     if start == 'local':
-#         context = browser.new_context(
-#             no_viewport=True,
-#             locale=request.config.getoption('l')
-#         )
-#         context.set_default_timeout(
-#             timeout=request.config.getoption('t')
-#         )
-#         # context.add_cookies([{'url': 'https://example.ru', 'name': 'ab_test', 'value': 'd'}]) добавляем куки, если нужны
-#         return context
-
-#     elif start == 'remote':
-#         context = browser.new_context(
-#             viewport=request.config.getoption('s'),
-#             locale=request.config.getoption('l')
-#         )
-#         context.set_default_timeout(
-#             timeout=request.config.getoption('t')
-#         )
-#         # context.add_cookies([{'url': 'https://example.ru', 'name': 'ab_test', 'value': 'd'}]) добавляем куки, если нужны
-#         return context
-
-
-
-# @pytest.fixture(scope="function")
-# def return_back(browser):
-#     browser.go_back()
+def intercept_requests(page):
+    """Фикстура для перехвата запросов."""
+    requests = []
+    page.on("request", lambda request: requests.append(request))
+    yield requests
+    # Очистка или обработка запросов после выполнения теста

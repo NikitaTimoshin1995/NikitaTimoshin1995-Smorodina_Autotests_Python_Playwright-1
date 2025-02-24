@@ -1,8 +1,4 @@
-# import os
-
-# class Constants:
-#     try:
-#         login = os.getenv('AUTH_LOGIN')
-#         password = os.getenv('AUTH_PASSWORD')
-#     except KeyError:
-#         print("LOGIN OR PW WASN'T FOUND")
+URL = 'https://dev.smorodina.ru/'
+SELLER_LOGIN = 'nikitatimoshinpost@gmail.com'
+SELLER_PASSWORD = 'Nik123'
+EXPECTED_URL_AFTER_LOGIN = 'https://dev.smorodina.ru/partner/summary'
