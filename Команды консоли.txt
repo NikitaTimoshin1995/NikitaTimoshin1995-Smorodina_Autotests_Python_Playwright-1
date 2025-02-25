@@ -1,0 +1,23 @@
+Запуск в трех браузерах 
+pytest -v --headed --browser chromium --browser firefox --browser webkit
+
+Запуск в трех браузерах конкретного файла
+pytest -v --headed --browser chromium --browser firefox --browser webkit tests/seller/auth/test_seller_auth.py
+pytest -v --browser chromium --browser firefox --browser webkit tests/seller/auth/test_seller_auth.py
+pytest -v --headed --browser firefox tests/seller/auth/test_seller_auth.py
+
+Тесты с сохранение отчета allure
+pytest -v -s --alluredir results
+
+Показать отчет из проекта
+allure serve results
+
+Создать репорт
+allure generate results -o report --clean
+
+Чтобы смотреть отчет локально в firefox
+1. Откройте Firefox и в адресной строке введите about:config, нажмите Enter.
+2. Нажмите "Я принимаю риск!".
+3. В строке поиска введите privacy.file_unique_origin.
+4. Если параметр найден и имеет значение true, дважды щелкните на нем, чтобы изменить его значение на false.
+5. Откройте index.html

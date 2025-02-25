@@ -2,36 +2,33 @@ import pytest
 from playwright.sync_api import Page, expect
 from fixtures.all import intercept_requests  # Импортируем фикстуру
 from data.assertions import Assertions  # Импортируем класс Assertions
+from data.constants import URL, SELLER_LOGIN1, SELLER_PASSWORD1, EXPECTED_URL_AFTER_LOGIN  # Импортируем константы
 import allure
-
-# Переменные
-url = 'https://dev.smorodina.ru/'
-partner_login1 = 'nikitatimoshinpost@gmail.com'
-partner_password1 = 'Nik123'
 
 # 1. УСПЕШНЫЙ ВХОД
 @allure.feature('Клиент')
 @allure.story('Авторизация клиента')
 @allure.label('Успешный вход')
 def test_auth1(page: Page, intercept_requests):  # Используем фикстуру
-    assertions = Assertions(page)  # Создаем экземпляр Assertions
+    # Создаем экземпляры классов
+    assertions = Assertions(page)
+    
     # Основной поток теста
     with allure.step('Открыть главную'):
-        page.goto(url)
+        page.goto(URL)
     with allure.step('Нажать "Искать туры"'):
         page.get_by_role('button', name='Искать туры').click()
     with allure.step('Нажать "Войти"'):
         page.get_by_role('button', name='Войти').click()
     with allure.step('Нажать "Организатор туров"'):
         page.locator('//h4[text()="Организатор туров"]').click()
-    with allure.step('Ввести емаил'):
-        page.fill('input[placeholder="email"]', partner_login1)
+    with allure.step('Ввести email'):
+        page.fill('input[placeholder="email"]', SELLER_LOGIN1)
     with allure.step('Ввести пароль'):
-        page.fill('input[placeholder="пароль"]', partner_password1)
+        page.fill('input[placeholder="пароль"]', SELLER_PASSWORD1)
     with allure.step('Нажать "Войти"'):
         page.click('button[type="submit"]')
+
+    # Проверяем конечный URL после логина
     with allure.step('Проверка url'):
-        expect(page).to_have_url('https://dev.smorodina.ru/partner/summary')
-    # Проверка статусов запросов после выполнения всех действий с использованием класса Assertions
-    with allure.step('Проверка, что все запросы с кодом 200'):
-        assertions.assert_request_statuses(intercept_requests)  # Проверяем, что все статусы 200
+        assertions.check_url(EXPECTED_URL_AFTER_LOGIN)

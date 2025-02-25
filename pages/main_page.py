@@ -2,6 +2,10 @@ import allure
 from pages.base import BasePage
 
 class MainPage(BasePage):
+    @allure.step("Открыть страницу {url}")
+    def open(self, url):
+        self.page.goto(url)
+    
     @allure.step("Нажать кнопку 'Искать туры'")
     def click_search_tours(self):
         self.page.get_by_role('button', name='Искать туры').click()
@@ -14,7 +18,7 @@ class MainPage(BasePage):
     def click_tour_organizer(self):
         self.page.locator('//h4[text()="Организатор туров"]').click()
     
-    @allure.step("Ввести email")
+    @allure.step("Ввести email {email}")
     def fill_email(self, email):
         self.page.fill('input[placeholder="email"]', email)
     
@@ -25,7 +29,3 @@ class MainPage(BasePage):
     @allure.step("Нажать кнопку 'Войти'")
     def submit_login(self):
         self.page.click('button[type="submit"]')
-    
-    @allure.step("Проверка URL")
-    def check_url(self, expected_url):
-        return self.page.url == expected_url

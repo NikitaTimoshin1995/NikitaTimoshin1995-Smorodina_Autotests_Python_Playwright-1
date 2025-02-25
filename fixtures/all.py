@@ -1,26 +1,23 @@
 import pytest
-from playwright.sync_api import sync_playwright
-from data.constants import URL
-
-@pytest.fixture(scope="session")
-def browser():
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        yield browser
-        browser.close()
-
-@pytest.fixture(scope="function")
-def page(browser):
-    """Фикстура для создания новой страницы Playwright."""
-    page = browser.new_page()
-    page.goto(URL)
-    yield page
-    page.close()
+from playwright.sync_api import Page
 
 @pytest.fixture
-def intercept_requests(page):
+def intercept_requests(page: Page):
     """Фикстура для перехвата запросов."""
+    
+    # Список для хранения информации о перехваченных запросах
     requests = []
-    page.on("request", lambda request: requests.append(request))
+
+    # Настройка перехвата запросов
+    def log_request(route):
+        requests.append(route)
+        route.continue_()
+
+    # Применяем перехватчик запросов к странице
+    page.on("route", log_request)
+
+    # Отдаем управление тесту
     yield requests
-    # Очистка или обработка запросов после выполнения теста
+
+    # После выполнения теста можем очистить запросы или выполнить другие действия
+    # Например, page.off("route", log_request) если нужно
