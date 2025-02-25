@@ -9,3 +9,7 @@ class Assertions:
     def check_url(self, expected_url: str):
         expect(self.page).to_have_url(expected_url)
 
+    @allure.step('Проверка статусов запросов')
+    def check_request_statuses(self, requests):
+        for request in requests:
+            assert request.response.status == 200, f"Запрос {request.url} завершился с кодом {request.response.status}"

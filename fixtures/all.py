@@ -19,5 +19,4 @@ def intercept_requests(page: Page):
     # Отдаем управление тесту
     yield requests
 
-    # После выполнения теста можем очистить запросы или выполнить другие действия
-    # Например, page.off("route", log_request) если нужно
+  

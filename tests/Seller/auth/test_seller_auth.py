@@ -1,4 +1,3 @@
-# tests/Seller/auth/test_seller_auth.py
 import pytest
 from playwright.sync_api import Page, expect
 from fixtures.all import intercept_requests  # Импортируем фикстуру
@@ -15,16 +14,20 @@ def test_auth1(page: Page, intercept_requests):  # Используем фикс
     main_page = MainPage(page)  # Создаем экземпляр MainPage
 
     # Основной поток теста с использованием методов из MainPage
-    with allure.step('Открыть главную страницу'):
-        main_page.open(URL)
-    main_page.click_search_tours()
-    main_page.click_login()
-    main_page.click_tour_organizer()
-    main_page.fill_email(SELLER_LOGIN1)
-    main_page.fill_password(SELLER_PASSWORD1)
-    main_page.submit_login()
+    main_page.open_page(URL)  # Открываем главную страницу
+    main_page.click_search_tours()  # Нажимаем "Искать туры"
+    main_page.click_login()  # Нажимаем "Войти"
+    main_page.click_tour_organizer()  # Нажимаем "Организатор туров"
+    main_page.fill_email(SELLER_LOGIN1)  # Заполняем email
+    main_page.fill_password(SELLER_PASSWORD1)  # Заполняем пароль
+    main_page.submit_login()  # Отправляем форму входа
+
+    # Ожидаем полной загрузки страницы после авторизации
+    main_page.wait_for_full_load()
 
     # Проверяем конечный URL после логина
-    with allure.step('Проверка URL после входа'):
-        assertions.check_url(EXPECTED_URL_AFTER_LOGIN)
+    assertions.check_url(EXPECTED_URL_AFTER_LOGIN)
+
+    # Проверяем, что все перехваченные запросы завершились успешно (код 200)
+    assertions.check_request_statuses(intercept_requests)
    
