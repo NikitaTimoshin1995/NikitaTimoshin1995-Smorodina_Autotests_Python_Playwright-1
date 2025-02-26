@@ -9,13 +9,14 @@ def intercept_requests(page: Page):
     requests = []
 
     # Настройка перехвата запросов
-    def log_request(route):
-        requests.append(route)
-        route.continue_()
+    def log_request(request):
+        requests.append(request)
 
     # Применяем перехватчик запросов к странице
-    page.on("route", log_request)
+    page.on("request", log_request)
 
     # Отдаем управление тесту
     yield requests
-  
+
+    # Очищаем список после завершения теста
+    requests.clear()

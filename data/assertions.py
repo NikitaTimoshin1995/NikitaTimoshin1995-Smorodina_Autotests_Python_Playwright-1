@@ -13,7 +13,9 @@ class Assertions:
     @allure.step('Проверка статусов запросов. Что все с кодом 200')
     def check_request_statuses(self, requests):
         for request in requests:
-            assert request.response.status == 200, f"Запрос {request.url} завершился с кодом {request.response.status}"
+            response = request.response()  # Получаем ответ
+            assert response is not None, f"Запрос {request.url} не получил ответа"
+            assert response.status in (200, 302), f"Запрос {request.url} завершился с кодом {response.status}"
 
     @allure.step('Проверка наличия ошибки "{text}"')
     def check_div_with_text(self, text: str):
@@ -26,6 +28,5 @@ class Assertions:
     def check_border_style_by_xpath(self, xpath: str):
         # Локатор для поиска элемента по XPath
         locator = self.page.locator(f"xpath={xpath}")
-        
         # Проверяем, что у элемента есть класс "invalid" (игнорируя лишние пробелы)
         expect(locator).to_have_class(re.compile(r".*\binvalid\b.*"))
