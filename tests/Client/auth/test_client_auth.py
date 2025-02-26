@@ -2,7 +2,7 @@ import pytest
 from playwright.sync_api import Page, expect
 from fixtures.all import intercept_requests  # Импортируем фикстуру
 from data.assertions import Assertions  # Импортируем класс Assertions
-from data.constants import URL, SELLER_LOGIN1, SELLER_PASSWORD1, EXPECTED_URL_AFTER_LOGIN  # Импортируем константы
+from data.constants import URL, SELLER_LOGIN1, SELLER_PASSWORD1, EXPECTED_URL_AFTER_LOGIN_SELLER  # Импортируем константы
 import allure
 
 # 1. УСПЕШНЫЙ ВХОД
@@ -10,8 +10,8 @@ import allure
 @allure.story('Авторизация клиента')
 @allure.label('Успешный вход')
 def test_auth1(page: Page, intercept_requests):  # Используем фикстуру
-    # Создаем экземпляры классов
-    assertions = Assertions(page)
+    
+    assertions = Assertions(page) 
     
     # Основной поток теста
     with allure.step('Открыть главную'):
@@ -31,4 +31,4 @@ def test_auth1(page: Page, intercept_requests):  # Используем фикс
 
     # Проверяем конечный URL после логина
     with allure.step('Проверка url'):
-        assertions.check_url(EXPECTED_URL_AFTER_LOGIN)
+        assertions.check_url(EXPECTED_URL_AFTER_LOGIN_SELLER)
