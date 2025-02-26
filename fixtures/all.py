@@ -18,5 +18,4 @@ def intercept_requests(page: Page):
 
     # Отдаем управление тесту
     yield requests
-
   
