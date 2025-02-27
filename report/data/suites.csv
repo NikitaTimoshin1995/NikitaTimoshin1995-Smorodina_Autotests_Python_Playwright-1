@@ -1,0 +1,4 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","5217","test_auth1[chromium]","tests.Client.auth","Sat Feb 22 00:02:37 MSK 2025","passed","Sat Feb 22 00:02:42 MSK 2025","","test_client_auth","",""
+"","2785","test_auth1[chromium]","tests.Seller.auth","Sat Feb 22 00:02:42 MSK 2025","passed","Sat Feb 22 00:02:45 MSK 2025","","test_seller_auth","",""
+"","1432","test_example[chromium]","tests","Sat Feb 22 00:02:45 MSK 2025","passed","Sat Feb 22 00:02:46 MSK 2025","","Test_example","",""
