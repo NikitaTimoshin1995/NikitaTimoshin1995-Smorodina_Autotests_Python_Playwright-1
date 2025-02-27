@@ -10,6 +10,10 @@ def intercept_requests(page: Page):
 
     # Настройка перехвата запросов
     def log_request(request):
+        # Проверяем, начинается ли URL с указанного префикса
+        if request.url.startswith("https://ff.kis.v2.scr.kaspersky-labs.com/"):
+            return  # Пропускаем этот запрос
+
         requests.append(request)
 
     # Применяем перехватчик запросов к странице
