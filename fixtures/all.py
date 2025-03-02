@@ -1,6 +1,29 @@
 import pytest
+import psycopg2
 from playwright.sync_api import Page
 import time
+from config import host, user, password, db_name
+
+@pytest.fixture
+def db_connection():
+    """Фикстура для подключения к базе данных."""
+    try:
+        # Установите соединение с базой данных
+        connection = psycopg2.connect(
+            host=host,
+            user=user,
+            password=password,
+            dbname=db_name
+        )
+        print("(ИНФО) Соединение с PostgreSQL успешно установлено.")
+        yield connection  # Возвращаем соединение для использования в тестах
+    except Exception as ex:
+        print("(ИНФО) Проблема с подключением к PostgreSQL:", ex)
+        yield None  # Если соединение не удалось, возвращаем None
+    finally:
+        if connection:
+            connection.close()
+            print("(ИНФО) Закрыли соединение с PostgreSQL")
 
 @pytest.fixture
 def intercept_requests(page: Page):

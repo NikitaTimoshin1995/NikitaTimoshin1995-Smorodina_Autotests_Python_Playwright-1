@@ -6,3 +6,4 @@ allure-pytest
 requests
 qase-pytest
 python-dotenv
+psycopg2-binary

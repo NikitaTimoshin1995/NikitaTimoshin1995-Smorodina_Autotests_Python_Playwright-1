@@ -7,10 +7,14 @@ pytest -v -s --headed --browser chromium --browser firefox --browser webkit test
 pytest -v --browser chromium --browser firefox --browser webkit tests/seller/auth/test_seller_auth.py
 pytest -v --headed --browser firefox tests/seller/auth/test_seller_auth.py
 pytest -v -s --browser chromium  tests/seller/auth/test_seller_auth.py
+pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_registration.py
+
+pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_registration.py
+
 
 Тесты с сохранение отчета allure
 pytest -v -s --alluredir results
-Remove-Item -Path results\* -Recurse -Force; pytest -v -s --headed --browser chromium --browser firefox --browser webkit --alluredir results
+Remove-Item -Path results\* -Recurse -Force; pytest -v -s --headed --browser chromium --browser firefox --browser webkit --alluredir results tests/seller/auth/test_seller_auth.py
 
 Показать отчет из проекта
 allure serve results

@@ -12,6 +12,14 @@ SELLER_AUTH_ERROR4 = 'Неверный пароль.'
 SELLER_AUTH_ERROR5 = 'Пользователь зарегистрирован как клиент.'
 SELLER_AUTH_ERROR6 = 'Пользователь зарегистрирован как референт'
 
+#Регистрация  продавца
+SELLER_REGISTRATION_NAME_COMPANY1 = 'ООО Автотест1'
+SELLER_REGISTRATION_PHONE1 = '72234567891'
+SELLER_REGISTRATION_EMAIL1 = 'avtotestsellersmorodina1@gmail.com'
+SELLER_REGISTRATION_EMAIL1_REGISTR = 'AvtotestSellerSmorodina1@gmail.com'
+SELLER_REGISTRATION_PASSWORD1 = 'Ola123'
+SELLER_REGISTRATION_REPEAT_PASSWORD1 = 'Ola123'
+
 
 #Авторизация клиента
 CLIENT_LOGIN1 = 'timoshintest1@gmail.com'
