@@ -7,10 +7,14 @@ pytest -v -s --headed --browser chromium --browser firefox --browser webkit test
 pytest -v --browser chromium --browser firefox --browser webkit tests/seller/auth/test_seller_auth.py
 pytest -v --headed --browser firefox tests/seller/auth/test_seller_auth.py
 pytest -v -s --browser chromium  tests/seller/auth/test_seller_auth.py
+pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_registration.py
+
+pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_registration.py
+
 
 Тесты с сохранение отчета allure
 pytest -v -s --alluredir results
-Remove-Item -Path results\* -Recurse -Force; pytest -v -s --headed --browser chromium --browser firefox --browser webkit --alluredir results
+Remove-Item -Path results\* -Recurse -Force; pytest -v -s --headed --browser chromium --browser firefox --browser webkit --alluredir results tests/seller/auth/test_seller_auth.py
 
 Показать отчет из проекта
 allure serve results
@@ -21,6 +25,13 @@ allure generate results -o report --clean
 Чтобы смотреть отчет локально в firefox
 1. Откройте Firefox и в адресной строке введите about:config, нажмите Enter.
 2. Нажмите "Я принимаю риск!".
-3. В строке поиска введите privacy.file_unique_origin.
-4. Если параметр найден и имеет значение true, дважды щелкните на нем, чтобы изменить его значение на false.
-5. Откройте index.html
+3. В строке поиска введите privacy.file_unique_origin
+4. Если параметр найден и имеет значение true, дважды щелкните на нем, чтобы изменить его значение на false.(Или справа у него есть кнопка)
+5. В строке поиска введите security.fileuri.strict_origin_policy
+6. Если параметр найден и имеет значение true, дважды щелкните на нем, чтобы изменить его значение на false.(Или справа у него есть кнопка)
+7. Откройте index.html (Именно в Firefox, если у вас архив, то предварительно извеките папку)
+8. После просмотра лучше поставить privacy.file_unique_origin и security.fileuri.strict_origin_policy значение true
+Сверху указано общее количество тест кейсов(test cases). Далее можно посмотреть детальнее Features by stories, у нас разделено на Клиент, Продавец, Админ, Референт.
+Если провалиться внутрь, то там будут test story, а в ней уже тесты для нее. Например, Features by stories выбираем Продавец, далее выбираем story Авторизация продавца.
+Обратите внимание, что одинаковые тесты повторяются три раза на разных движках браузеров chromium(Chrome, Microsoft edge, Яндекс браузер, Opera), firefox(Mozilla Firefox), webkit(Safari).
+В каждом тесте указаны шаги, они тоже могут иметь вложенность. Например, шаг Авторизация продавца включает в себя Открытие страницы, закрыть приветствие, нажать Вход, ввести логин и.т.д.
