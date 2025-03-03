@@ -2,10 +2,13 @@ import pytest
 from playwright.sync_api import Page, expect
 from fixtures.all import intercept_requests  # Импортируем фикстуру
 from data.assertions import Assertions  # Импортируем класс Assertions
-from data.constants import SELLER_LOGIN1, SELLER_PASSWORD1, EXPECTED_URL_AFTER_LOGIN_SELLER, SELLER_AUTH_ERROR1, SELLER_AUTH_ERROR2, SELLER_AUTH_ERROR3, SELLER_AUTH_ERROR4, SELLER_AUTH_ERROR5, CLIENT_LOGIN1, CLIENT_PASSWORD1, REFERENT_LOGIN1, REFERENT_PASSWORD1, SELLER_AUTH_ERROR6, SELLER_LOGIN1_REGISTR # Импортируем константы
+from data.constants import (SELLER_LOGIN1, SELLER_PASSWORD1, EXPECTED_URL_AFTER_LOGIN_SELLER, SELLER_AUTH_ERROR1,
+                            SELLER_AUTH_ERROR2, SELLER_AUTH_ERROR3, SELLER_AUTH_ERROR4, SELLER_AUTH_ERROR5, CLIENT_LOGIN1,
+                            CLIENT_PASSWORD1, REFERENT_LOGIN1, REFERENT_PASSWORD1, SELLER_AUTH_ERROR6, SELLER_LOGIN1_REGISTR )# Импортируем константы
 from pages.main_page import MainPage  # Импортируем MainPage
 import allure
 from Locators.locator_main_page import LOCATORS
+
 
 @allure.feature('Продавец')
 @allure.story('Авторизация продавца')
@@ -61,6 +64,7 @@ def test_seller_auth5(page: Page):
     main_page = MainPage(page)  
     main_page.seller_auth(CLIENT_LOGIN1, CLIENT_PASSWORD1) 
     assertions.check_div_with_text(SELLER_AUTH_ERROR5) 
+
 
 @allure.feature('Продавец') 
 @allure.story('Авторизация продавца')

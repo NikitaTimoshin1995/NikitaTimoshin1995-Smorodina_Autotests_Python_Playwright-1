@@ -9,6 +9,7 @@ pytest -v --headed --browser firefox tests/seller/auth/test_seller_auth.py
 pytest -v -s --browser chromium  tests/seller/auth/test_seller_auth.py
 pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_registration.py
 
+
 pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_registration.py
 
 
