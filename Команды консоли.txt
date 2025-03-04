@@ -11,6 +11,7 @@ pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_
 
 
 pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_registration.py
+pytest -v -s --headed --browser chromium --browser firefox --browser webkit tests/seller/registration/test_seller_registration.py
 
 
 Тесты с сохранение отчета allure

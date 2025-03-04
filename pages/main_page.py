@@ -59,7 +59,7 @@ class MainPage(BasePage):
         self.fill_element('Вторая цифра', digits[1])
         self.fill_element('Третья цифра', digits[2])
         self.fill_element('Четвертая цифра', digits[3])
-        self.click_element('Кнопка Войти в подтверждении телефона')
+        
 
 
     @allure.step("Удалить пользователя и связанные данные из базы данных")
@@ -68,7 +68,7 @@ class MainPage(BasePage):
 
         # Получаем user_id
         cursor.execute(
-            "SELECT user_id FROM users WHERE login=%s OR email=%s",
+            "SELECT id FROM users WHERE login=%s OR email=%s",
             (email_or_login, email_or_login)
         )
         result = cursor.fetchone()
@@ -78,16 +78,17 @@ class MainPage(BasePage):
         user_id = result[0]
 
         # Удаляем связанные данные
-        cursor.execute("DELETE FROM operator_users WHERE user_id=%s", (user_id,))
         cursor.execute("DELETE FROM operator_user_rule WHERE user_id=%s", (user_id,))
+        cursor.execute("DELETE FROM operator_users WHERE user_id=%s", (user_id,))
         cursor.execute("DELETE FROM profiles WHERE user_id=%s", (user_id,))
         cursor.execute("DELETE FROM profiles_legal WHERE user_id=%s", (user_id,))
         cursor.execute("DELETE FROM users_email_temp WHERE user_id=%s", (user_id,))
         cursor.execute("DELETE FROM sys_users WHERE user_id=%s", (user_id,))
+        cursor.execute("DELETE FROM sys_user_logs WHERE user_id=%s", (user_id,))
 
         # Удаляем основного пользователя
-        cursor.execute("DELETE FROM users WHERE login=%s OR email=%s", (email_or_login, email_or_login))
         cursor.execute("DELETE FROM operators WHERE name=%s", (company_name,))
-
+        cursor.execute("DELETE FROM users WHERE login=%s OR email=%s", (email_or_login, email_or_login))
+        
         conn.commit()
         cursor.close()
