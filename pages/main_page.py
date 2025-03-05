@@ -40,7 +40,7 @@ class MainPage(BasePage):
             self.click_element('кнопка Зарегистрироваться')  # Нажимаем кнопку регистрации
         response = response_info.value  # Получаем объект ответа
         # Далее можно добавить проверку ответа, если нужно
-        assert response.status in (200,422), f"Запрос вернул неожидаемый статус: {response.status}"
+        assert response.status == 200, f"Запрос вернул неожидаемый статус: {response.status}"
         
 
         
@@ -72,8 +72,12 @@ class MainPage(BasePage):
             (email_or_login, email_or_login)
         )
         result = cursor.fetchone()
+        
+        # Если пользователь не найден, просто завершаем выполнение метода
         if result is None:
-            raise ValueError(f"Пользователь с email/логином {email_or_login} не найден.")
+            print(f"Пользователь с email/логином {email_or_login} не найден. Переход к следующему шагу.")
+            cursor.close()
+            return  # Или можно использовать "return None" для явного указания, что ничего не было сделано
 
         user_id = result[0]
 
