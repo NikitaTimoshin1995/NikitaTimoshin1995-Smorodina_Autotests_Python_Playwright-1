@@ -21,6 +21,8 @@ SELLER_REGISTRATION_SERVICE_POLICY = '/html/body/div/ion-app/ion-router-outlet/d
 SELLER_REGISTRATION_PROMOTIONAL_MATERIALS = '/html/body/div/ion-app/ion-router-outlet/div/div/div[2]/div[2]/div/div/form/div[8]/input' # чекбокс Соглашаюсь получать рекламные материалы
 SELLER_REGISTRATION_BUTTON_REGISTER= '/html/body/div/ion-app/ion-router-outlet/div/div/div[2]/div[2]/div/div/form/button' # кнопка Зарегистрироваться
 SELLER_REGISTRATION_DIV_HAVE_ACCOUNT= '/html/body/div/ion-app/ion-router-outlet/div/div/div[2]/div[2]/div/div/div[2]/div' # кнопка Уже есть аккаунт
+SELLER_REGISTRATION_DIV_PHONE_BORDER = '/html/body/div/ion-app/ion-router-outlet/div/div/div[2]/div[2]/div/div/form/div[2]' # Граница поля телефон в регистрации продавца
+SELLER_REGISTRATION_DIV_EMAIL_BORDER = '/html/body/div/ion-app/ion-router-outlet/div/div/div[2]/div[2]/div/div/form/div[3]' # Граница email телефон в регистрации продавца
 # Подтверждение телефона продавца
 SELLER_INPUT_FIRST_NUMBER = '/html/body/div/ion-app/ion-router-outlet/div/div/div[2]/div[2]/div/div/form/div[1]/input[1]' # Первая цифра
 SELLER_INPUT_FIRST_NUMBER = '/html/body/div/ion-app/ion-router-outlet/div/div/div[2]/div[2]/div/div/form/div[1]/input[2]' # Вторая цифра
@@ -53,12 +55,15 @@ LOCATORS = {
     'Соглашаюсь получать рекламные материалы': SELLER_REGISTRATION_PROMOTIONAL_MATERIALS,
     'кнопка Зарегистрироваться': SELLER_REGISTRATION_BUTTON_REGISTER,
     'Уже есть аккаунт': SELLER_REGISTRATION_DIV_HAVE_ACCOUNT,
+    'границы поля телефон в регистрации': SELLER_REGISTRATION_DIV_PHONE_BORDER,
+     'границы поля email в регистрации': SELLER_REGISTRATION_DIV_EMAIL_BORDER,
     # Подтверждение телефона продавца
     'Первая цифра': SELLER_INPUT_FIRST_NUMBER,
     'Вторая цифра': SELLER_INPUT_FIRST_NUMBER, 
     'Третья цифра': SELLER_INPUT_FIRST_NUMBER, 
     'Четвертая цифра': SELLER_INPUT_FIRST_NUMBER, 
     'Кнопка Войти в подтверждении телефона': SELLER_BUTTON_ENTER_CONFIRM_PHONE
+   
 
 
     # 'кнопка Путешественник': BUTTON_TRAVELLER

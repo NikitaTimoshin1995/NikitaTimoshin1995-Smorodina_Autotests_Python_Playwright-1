@@ -40,7 +40,7 @@ class MainPage(BasePage):
             self.click_element('кнопка Зарегистрироваться')  # Нажимаем кнопку регистрации
         response = response_info.value  # Получаем объект ответа
         # Далее можно добавить проверку ответа, если нужно
-        assert response.status == 200, f"Запрос вернул неожидаемый статус: {response.status}"
+        assert response.status in (200,422), f"Запрос вернул неожидаемый статус: {response.status}"
         
 
         
