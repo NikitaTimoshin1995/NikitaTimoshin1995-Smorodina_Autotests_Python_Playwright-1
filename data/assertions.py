@@ -46,3 +46,17 @@ class Assertions:
         assert user_email == email, f"Email не совпадает. Ожидалось: {email}, но получено: {user_email}"
         assert user_phone == phone, f"Телефон не совпадает. Ожидалось: {phone}, но получено: {user_phone}"
         assert user_consent_advertising == consent_advertising, f"Согласие на рекламу не совпадает. Ожидалось: {consent_advertising}, но получено: {user_consent_advertising}"
+
+
+    @allure.step('Проверка, что элемент  "{xpath}" отключен')
+    def check_element_disabled_by_xpath(self, xpath: str):
+        locator = self.page.locator(f"xpath={xpath}")
+        is_disabled = locator.evaluate("element => element.hasAttribute('disabled')")
+        assert is_disabled, f"Элемент по xpath: {xpath} не отключен."
+
+
+    @allure.step('Проверка, что элемент "{xpath}" включен')
+    def check_element_enabled_by_xpath(self, xpath: str):
+        locator = self.page.locator(f"xpath={xpath}")
+        is_enabled = locator.evaluate("element => !element.hasAttribute('disabled')")
+        assert is_enabled, f"Элемент по xpath: {xpath} отключен."

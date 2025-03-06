@@ -41,6 +41,27 @@ class MainPage(BasePage):
         response = response_info.value  # Получаем объект ответа
         # Далее можно добавить проверку ответа, если нужно
         assert response.status == 200, f"Запрос вернул неожидаемый статус: {response.status}"
+    
+
+    allure.step("Заполнение данных продавца при регистрации")
+    def seller_registration_only_fill(self, seller_company_name, seller_profile_phone, seller_profile_email, 
+                            seller_password, seller_repeat_password, accept_policy=True, 
+                            accept_user_agreement=True, accept_promotional_materials=True):
+        self.open_page(URL)  # Открываем главную страницу
+        self.click_element('кнопка Искать туры')  # Нажимаем "Искать туры"
+        self.click_element('кнопка Вход')  # Нажимаем "Войти"
+        self.click_element('кнопка Организатор туров')  # Нажимаем "Организатор туров"
+        self.click_element('кнопка Создать аккаунт организатора')  # Нажимаем "Создать аккаунт организатора"
+        self.fill_element('поле Название компании',  seller_company_name),
+        self.fill_element('поле Номер телефона', seller_profile_phone),
+        self.fill_element('поле Email', seller_profile_email),
+        self.fill_element('поле Придумайте пароль', seller_password),
+        self.fill_element('поле Пароль еще раз', seller_repeat_password)
+        if accept_policy:
+            self.click_element('чекбокс Соглашаюсь с политикой обработки данных')
+        if accept_user_agreement:
+            self.click_element('чекбокс Принимаю пользовательское соглашение')
+        
         
 
         
@@ -96,3 +117,19 @@ class MainPage(BasePage):
         
         conn.commit()
         cursor.close()
+    
+
+    @allure.step("Заполнение паролей")
+    def seller_registration_fill_passwords(self, password1: str, password2: str):
+        self.fill_element('поле Придумайте пароль', password1)
+        self.fill_element('поле Пароль еще раз', password2)
+        self.click_element('кнопка Зарегистрироваться')
+    
+    @allure.step("Заполнение согласий для регистрации продавца")
+    def handle_agreements(self, accept_policy, accept_user_agreement, accept_promotional_materials):
+        if accept_policy:
+            self.click_element('чекбокс Соглашаюсь с политикой обработки данных')
+        if accept_user_agreement:
+            self.click_element('чекбокс Принимаю пользовательское соглашение')
+        if accept_promotional_materials:
+            self.click_element('Соглашаюсь получать рекламные материалы')

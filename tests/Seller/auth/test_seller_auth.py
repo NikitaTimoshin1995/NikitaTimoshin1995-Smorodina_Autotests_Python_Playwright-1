@@ -66,14 +66,14 @@ def test_seller_auth5(page: Page):
     assertions.check_div_with_text(SELLER_AUTH_ERROR5) 
 
 
-# @allure.feature('Продавец') 
-# @allure.story('Авторизация продавца')
-# @allure.title('Ошибки. Зарегистрирован как референт.')
-# def test_seller_auth6(page: Page): 
-#     assertions = Assertions(page)  
-#     main_page = MainPage(page)  
-#     main_page.seller_auth(REFERENT_LOGIN1, REFERENT_PASSWORD1) 
-#     assertions.check_div_with_text(SELLER_AUTH_ERROR6) 
+@allure.feature('Продавец') 
+@allure.story('Авторизация продавца')
+@allure.title('Ошибки. Зарегистрирован как референт.')
+def test_seller_auth6(page: Page): 
+    assertions = Assertions(page)  
+    main_page = MainPage(page)  
+    main_page.seller_auth(REFERENT_LOGIN1, REFERENT_PASSWORD1) 
+    assertions.check_div_with_text(SELLER_AUTH_ERROR6) 
 
 
 @allure.feature('Продавец')

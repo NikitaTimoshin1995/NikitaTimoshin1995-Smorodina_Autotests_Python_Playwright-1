@@ -26,7 +26,10 @@ SELLER_REGISTRATION_REPEAT_PASSWORD1 = 'Ola123'
 SELLER_REGISTRATION_ERROR1 = 'Такое значение поля номер телефона уже существует.'
 SELLER_REGISTRATION_ERROR2 = 'Такое значение поля email уже существует.'
 SELLER_REGISTRATION_ERROR3 = 'Поле email должно быть действительным электронным адресом.'   
-SELLER_REGISTRATION_ERROR4 = 'Номер телефона введен не полностью.'
+SELLER_REGISTRATION_ERROR4 = 'Номер телефона введен не полностью.'   
+SELLER_REGISTRATION_ERROR5 = 'Пароль должен содержать не менее 6-ти символов. Пароль должен содержать цифры и латинские буквы в верхнем и нижнем регистрах.'
+SELLER_REGISTRATION_ERROR6 = 'Пароль должен содержать цифры и латинские буквы в верхнем и нижнем регистрах.'
+SELLER_REGISTRATION_ERROR7 = 'Пароли не совпадают'
 
 #Авторизация клиента
 CLIENT_LOGIN1 = 'timoshintest1@gmail.com'
