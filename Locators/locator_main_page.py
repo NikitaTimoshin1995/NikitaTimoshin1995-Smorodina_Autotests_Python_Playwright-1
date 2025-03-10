@@ -35,6 +35,7 @@ SELLER_INPUT_FIRST_NUMBER = '/html/body/div/ion-app/ion-router-outlet/div/div/di
 SELLER_INPUT_FIRST_NUMBER = '/html/body/div/ion-app/ion-router-outlet/div/div/div[2]/div[2]/div/div/form/div[1]/input[4]' # Четвертая цифра
 SELLER_BUTTON_ENTER_CONFIRM_PHONE = '/html/body/div/ion-app/ion-router-outlet/div/div/div[2]/div[2]/div/div/form/div[2]/button' # Кнопка Войти в подтверждении телефона
 
+#
 
 # BUTTON_TRAVELLER = '/html/body/div/ion-app/ion-router-outlet/div/div/div[1]/div[4]/div[1]/div/h4' # Кнопка "Путешественник" 
 
