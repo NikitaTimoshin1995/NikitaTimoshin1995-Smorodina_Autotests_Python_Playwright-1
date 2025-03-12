@@ -28,7 +28,7 @@ def test_seller_registration1(page:Page,intercept_requests, db_connection):
     main_page.seller_confirm_phone(db_connection, SELLER_REGISTRATION_PHONE1)
     assertions.check_url(EXPECTED_URL_AFTER_LOGIN_SELLER)
     assertions.check_request_statuses(intercept_requests)
-    assertions.check_user_in_db(db_connection, SELLER_REGISTRATION_EMAIL1, None, 1, 1) 
+    assertions.check_user_in_db(db_connection, SELLER_REGISTRATION_EMAIL1, SELLER_REGISTRATION_PHONE1, 1, 1) 
     # Удаление пользователя и связанных данных из базы данных
     main_page.delete_user_and_related_data(db_connection, SELLER_REGISTRATION_EMAIL1, SELLER_REGISTRATION_NAME_COMPANY1)
 

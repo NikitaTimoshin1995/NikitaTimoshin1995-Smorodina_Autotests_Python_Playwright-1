@@ -31,9 +31,11 @@ def intercept_requests(page: Page):
     
     # Список для хранения информации о перехваченных запросах
     requests = []
+    active_requests_count = 0  # Счетчик активных запросов
 
     # Настройка перехвата запросов
     def log_request(request):
+        nonlocal active_requests_count
         # Проверяем, начинается ли URL с указанного префикса
         if request.url.startswith("https://ff.kis.v2.scr.kaspersky-labs.com/"):
             return  # Пропускаем этот запрос
@@ -41,11 +43,26 @@ def intercept_requests(page: Page):
         # Записываем время и URL запроса
         log_time = time.strftime('%H:%M:%S')
         print(f"{log_time} - Запрос: {request.method} {request.url}")  # Логируем метод и URL
-
+        
         requests.append(request)
+        active_requests_count += 1  # Увеличиваем счетчик активных запросов
+        
+        # Выводим текущий статус активных запросов
+        print(f"(ИНФО) Активные запросы: {active_requests_count}, URL: {[req.url for req in requests]}")
 
-    # Применяем перехватчик запросов к странице
+    # Настройка обработчика окончаний запросов
+    def log_response(response):
+        nonlocal active_requests_count
+        active_requests_count -= 1  # Уменьшаем счетчик активных запросов
+        if active_requests_count < 0:  # Защита на случай, если счетчик выйдет за границы
+            active_requests_count = 0
+        
+        # Выводим текущий статус активных запросов
+        print(f"(ИНФО) Активные запросы: {active_requests_count}")
+
+    # Применяем перехватчик запросов и ответов к странице
     page.on("request", log_request)
+    page.on("response", log_response)
 
     # Отдаем управление тесту
     yield requests

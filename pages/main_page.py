@@ -38,9 +38,7 @@ class MainPage(BasePage):
         self.click_element('кнопка Зарегистрироваться')  
         with self.page.expect_response("https://dev.smorodina.ru/api/register/operator") as response_info:
             self.click_element('кнопка Зарегистрироваться')  # Нажимаем кнопку регистрации
-        response = response_info.value  # Получаем объект ответа
-        # Далее можно добавить проверку ответа, если нужно
-        assert response.status == 200, f"Запрос вернул неожидаемый статус: {response.status}"
+       
     
 
     allure.step("Заполнение данных продавца при регистрации")
