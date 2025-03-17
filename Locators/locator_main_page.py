@@ -54,6 +54,14 @@ SELLER_INPUT__COMPANY_LEGAL_BILL = '/html/body/div/ion-app/ion-router-outlet/div
 SELLER_INPUT__COMPANY_LEGAL_BIC = '/html/body/div/ion-app/ion-router-outlet/div/ion-router-outlet/ion-content/div/form/div[1]/div[10]/div[2]/div/input' # БИК
 SELLER_INPUT__COMPANY_LEGAL_BANK = '/html/body/div/ion-app/ion-router-outlet/div/ion-router-outlet/ion-content/div/form/div[1]/div[11]/div[2]/div/input' # Банк
 SELLER_INPUT__COMPANY_LEGAL_DIRECTOR = '/html/body/div/ion-app/ion-router-outlet/div/ion-router-outlet/ion-content/div/form/div[1]/div[12]/div[2]/div/input' # ФИО ген. директора
+# Индивидуальный предприниматель
+SELLER_INPUT_COMPANY_IP_INN = '/html/body/div/ion-app/ion-router-outlet/div/ion-router-outlet/ion-content/div/form/div[1]/div[2]/div[2]/div[1]/input'  #  ИНН
+SELLER_INPUT_COMPANY_IP_FULLNAME = '/html/body/div/ion-app/ion-router-outlet/div/ion-router-outlet/ion-content/div/form/div[1]/div[3]/div[2]/div/input'  #  ФИО
+SELLER_INPUT_COMPANY_IP_OGRN = '/html/body/div/ion-app/ion-router-outlet/div/ion-router-outlet/ion-content/div/form/div[1]/div[4]/div[2]/div/input'  # ОГРН
+SELLER_INPUT_COMPANY_IP_BILL = '/html/body/div/ion-app/ion-router-outlet/div/ion-router-outlet/ion-content/div/form/div[1]/div[5]/div[2]/div/input'  #  Р. / счёт
+SELLER_INPUT_COMPANY_IP_BIC = '/html/body/div/ion-app/ion-router-outlet/div/ion-router-outlet/ion-content/div/form/div[1]/div[6]/div[2]/div/input'  # БИК
+SELLER_INPUT_COMPANY_IP_BANK = '/html/body/div/ion-app/ion-router-outlet/div/ion-router-outlet/ion-content/div/form/div[1]/div[7]/div[2]/div/input'  # Банк
+
 
 
 
