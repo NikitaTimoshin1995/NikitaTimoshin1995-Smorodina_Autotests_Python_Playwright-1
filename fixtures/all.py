@@ -1,54 +1,96 @@
-import pytest
-import psycopg2
-from playwright.sync_api import Page
+from pathlib import Path
 import time
-from config import host, user, password, db_name
+import psycopg2
+import pytest
+from playwright.sync_api import Page
+from config import db_name, db_name_dev_logs, host, password, user
+
 
 @pytest.fixture
 def db_connection():
-    """Фикстура для подключения к базе данных."""
+    """Fixture for connecting to the main PostgreSQL database."""
+    connection = None
     try:
-        # Установите соединение с базой данных
         connection = psycopg2.connect(
             host=host,
             user=user,
             password=password,
-            dbname=db_name
+            dbname=db_name,
         )
-        print("(ИНФО) Соединение с PostgreSQL успешно установлено.")
-        yield connection  # Возвращаем соединение для использования в тестах
+        print("(INFO) PostgreSQL connection established.")
+        yield connection
     except Exception as ex:
-        print("(ИНФО) Проблема с подключением к PostgreSQL:", ex)
-        yield None  # Если соединение не удалось, возвращаем None
+        print("(INFO) PostgreSQL connection error:", ex)
+        yield None
     finally:
-        if connection:
+        if connection is not None:
             connection.close()
-            print("(ИНФО) Закрыли соединение с PostgreSQL")
+            print("(INFO) PostgreSQL connection closed.")
+
+
+@pytest.fixture
+def db_connection_dev_logs():
+    """Fixture for connecting to the dev logs PostgreSQL database."""
+    connection = None
+    try:
+        connection = psycopg2.connect(
+            host=host,
+            user=user,
+            password=password,
+            dbname=db_name_dev_logs,
+        )
+        print("(INFO) PostgreSQL connection established.")
+        yield connection
+    except Exception as ex:
+        print("(INFO) PostgreSQL connection error:", ex)
+        yield None
+    finally:
+        if connection is not None:
+            connection.close()
+            print("(INFO) PostgreSQL connection closed.")
+
 
 @pytest.fixture
 def intercept_requests(page: Page):
-    """Фикстура для перехвата запросов."""
-    
-    # Список для хранения информации о перехваченных запросах
+    """Fixture for capturing requests relevant to UI checks."""
     requests = []
+    active_requests_count = 0
 
-    # Настройка перехвата запросов
     def log_request(request):
-        # Проверяем, начинается ли URL с указанного префикса
-        if request.url.startswith("https://ff.kis.v2.scr.kaspersky-labs.com/"):
-            return  # Пропускаем этот запрос
-
-        # Записываем время и URL запроса
-        log_time = time.strftime('%H:%M:%S')
-        print(f"{log_time} - Запрос: {request.method} {request.url}")  # Логируем метод и URL
-
+        nonlocal active_requests_count
+        if (
+            request.url.startswith("https://ff.kis.v2.scr.kaspersky-labs.com/")
+            or request.url.startswith("https://core-renderer-tiles.maps.yandex")
+            or request.url.startswith("https://fonts.gstatic.com/")
+            or request.url.startswith("https://cdn.smorodina.ru/dev/pictures/products/")
+            or request.url.startswith("https://privacy-cs.mail.ru")
+            or request.url.startswith("https://top-fwz1.mail.ru")
+            or request.url.startswith("https://webmapapi.navitel.ru")
+            or request.url.startswith("https://api.sendychat.ru")
+            or request.url.startswith("https://directcrm.dashamail.com/")
+            or request.url.endswith("/api/tours/bundles")
+            or request.url.startswith("blob:")
+        ):
+            return
+        # print(f\"{time.strftime('%H:%M:%S')} - Request: {request.method} {request.url}\")
         requests.append(request)
+        active_requests_count += 1
 
-    # Применяем перехватчик запросов к странице
+    def log_response(response):
+        nonlocal active_requests_count
+        active_requests_count -= 1
+        if active_requests_count < 0:
+            active_requests_count = 0
     page.on("request", log_request)
-
-    # Отдаем управление тесту
+    page.on("response", log_response)
     yield requests
-
-    # Очищаем список после завершения теста
     requests.clear()
+
+
+@pytest.fixture
+def photo_paths():
+    def _get_paths(*filenames):
+        project_dir = Path(__file__).parent.parent
+        photos_dir = project_dir / "photos"
+        return [str(photos_dir / fn) for fn in filenames]
+    return _get_paths

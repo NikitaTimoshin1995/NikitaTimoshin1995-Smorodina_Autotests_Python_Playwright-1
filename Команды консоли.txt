@@ -1,37 +1,61 @@
 Запуск в трех браузерах 
 pytest -v --headed --browser chromium --browser firefox --browser webkit
 
-Запуск в трех браузерах конкретного файла
-pytest -v -s --headed --browser chromium --browser firefox --browser webkit --alluredir results 
-pytest -v -s --headed --browser chromium --browser firefox --browser webkit tests/seller/auth/test_seller_auth.py
-pytest -v --browser chromium --browser firefox --browser webkit tests/seller/auth/test_seller_auth.py
-pytest -v --headed --browser firefox tests/seller/auth/test_seller_auth.py
-pytest -v -s --browser chromium  tests/seller/auth/test_seller_auth.py
-pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_registration.py
-
-pytest -v -s --headed --browser chromium  tests/seller/registration/test_seller_registration.py
-
-
-Тесты с сохранение отчета allure
-pytest -v -s --alluredir results
-Remove-Item -Path results\* -Recurse -Force; pytest -v -s --headed --browser chromium --browser firefox --browser webkit --alluredir results tests/seller/auth/test_seller_auth.py
-
+Отчет локально
+ --alluredir results 
 Показать отчет из проекта
 allure serve results
 
-Создать репорт
-allure generate results -o report --clean
 
-Чтобы смотреть отчет локально в firefox
-1. Откройте Firefox и в адресной строке введите about:config, нажмите Enter.
-2. Нажмите "Я принимаю риск!".
-3. В строке поиска введите privacy.file_unique_origin
-4. Если параметр найден и имеет значение true, дважды щелкните на нем, чтобы изменить его значение на false.(Или справа у него есть кнопка)
-5. В строке поиска введите security.fileuri.strict_origin_policy
-6. Если параметр найден и имеет значение true, дважды щелкните на нем, чтобы изменить его значение на false.(Или справа у него есть кнопка)
-7. Откройте index.html (Именно в Firefox, если у вас архив, то предварительно извеките папку)
-8. После просмотра лучше поставить privacy.file_unique_origin и security.fileuri.strict_origin_policy значение true
-Сверху указано общее количество тест кейсов(test cases). Далее можно посмотреть детальнее Features by stories, у нас разделено на Клиент, Продавец, Админ, Референт.
-Если провалиться внутрь, то там будут test story, а в ней уже тесты для нее. Например, Features by stories выбираем Продавец, далее выбираем story Авторизация продавца.
-Обратите внимание, что одинаковые тесты повторяются три раза на разных движках браузеров chromium(Chrome, Microsoft edge, Яндекс браузер, Opera), firefox(Mozilla Firefox), webkit(Safari).
-В каждом тесте указаны шаги, они тоже могут иметь вложенность. Например, шаг Авторизация продавца включает в себя Открытие страницы, закрыть приветствие, нажать Вход, ввести логин и.т.д.
+
+1.КЛИЕНТ
+    1.1. Авторизация и регистрация
+         pytest -v -s --headed --browser chromium tests/client/client_auth_and_registration/test_client_auth_and_registration.py
+
+    1.2. Корзина
+            Покупка одного тура
+                pytest -v -s --headed --browser chromium tests/client/client_basket/test_client_basket_single_buy.py
+            Бронирование одного тура
+                pytest -v -s --headed --browser chromium tests/client/client_basket/test_client_basket_single_booking.py
+            Ошибки
+                pytest -v -s --headed --browser chromium tests/client/client_basket/test_client_basket_errors.py
+            Составной заказ
+                pytest -v -s --headed --browser chromium tests/client/client_basket/test_client_basket_composite.py
+            Страхование
+                pytest -v -s --headed --browser chromium tests/client/client_basket/test_client_basket_insurance.py
+
+            
+2.ПРОДАВЕЦ
+    2.1. Авторизация 
+        pytest -v -s --headed  --browser chromium tests/seller/seller_auth/test_seller_auth.py
+
+    2.2. Данные компании
+        Новый ПРОДАВЕЦ
+            ЮР
+                pytest -v -s --headed  --browser chromium tests/seller/seller_company_details/new_seller/test_seller_company_details_legal_new.py
+            Ип
+                pytest -v -s --headed  --browser chromium tests/seller/seller_company_details/new_seller/test_seller_company_details_ip_new.py
+            Самозанятый
+                pytest -v -s --headed  --browser chromium tests/seller/seller_company_details/new_seller/test_seller_company_details_self_new.py
+        Старый ПРОДАВЕЦ
+            ЮР
+                pytest -v -s --headed  --browser chromium tests/seller/seller_company_details/old_seller/test_seller_company_details_legal_old.py
+            ИП
+                pytest -v -s --headed  --browser chromium tests/seller/seller_company_details/old_seller/test_seller_company_details_ip_old.py
+            Самозанятый
+                pytest -v -s --headed  --browser chromium tests/seller/seller_company_details/old_seller/test_seller_company_details_self_old.py
+                
+    2.3. Регистрация
+        pytest -v -s --headed --browser chromium tests/seller/seller_registration/test_seller_registration.py
+
+    2.4.Туры
+        2.4.1. Создание тура
+            pytest -v -s --headed --browser chromium tests/seller/seller_tours/seller_create_tour/test_seller_create_tour.py
+
+     2.5.Сводка
+             pytest -v -s --headed --browser chromium tests/seller/seller_summary/test_seller_summary.py
+
+
+3. Другое
+            pytest -v -s --headed --browser chromium tests/other/test_other.py
+

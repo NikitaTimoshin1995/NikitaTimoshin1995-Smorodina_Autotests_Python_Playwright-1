@@ -87,3 +87,6 @@ qaseio.lock
 failures
 tests/build
 tests/qaseio.lock
+
+#github
+.github

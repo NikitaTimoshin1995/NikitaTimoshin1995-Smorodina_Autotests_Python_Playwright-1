@@ -1,0 +1,95 @@
+import allure
+from Assertions.seller.seller_company_details.assert_seller_company_details import AssertionsCompanyDetails
+from playwright.sync_api import Page
+from Locators.loc_all_directories import LOC_SELLER_COMPANY_DATA
+from Locators.loc_all_directories import ALL_LOCATORS
+import time
+
+class AssertionsCompanyDetailsSelf(AssertionsCompanyDetails):
+    #Проверки самозанятых
+    @allure.step("Проверка, что данные самозанятого сохранились")
+    def check_self_in_db(self, db_connection, login: str, inn: str, surname: str, first_name: str,
+                          last_name: str, payment_account: str, bic: str, bank_title: str,
+                          license: str, address: str, phone: str, email: str, state: str):
+        cursor = db_connection.cursor()
+        # Первый запрос для получения user_id
+        query_user_id = "SELECT id FROM users WHERE email = %s"
+        cursor.execute(query_user_id, (login,))
+        user_id = cursor.fetchone()      
+        assert user_id is not None, f"Пользователь с логином: {login} не найден в базе данных."
+        user_id = user_id[0]  # Получаем id пользователя
+        # Второй запрос для получения profile_id
+        query_profile_id = "SELECT profile_id FROM profiles WHERE user_id = %s"
+        cursor.execute(query_profile_id, (user_id,))
+        profile_id = cursor.fetchone()
+        assert profile_id is not None, f"Профиль для пользователя с id: {user_id} не найден в базе данных."
+        profile_id = profile_id[0]  # Получаем profile_id
+        # Третий запрос для получения данных профиля
+        query_profile_data = """
+            SELECT inn, surname, first_name, last_name, payment_account, bic, bank_title, license, address, phone, email, state 
+            FROM profiles_self WHERE id = %s
+        """
+        cursor.execute(query_profile_data, (profile_id,))
+        profile_data = cursor.fetchone()
+        cursor.close()
+        assert profile_data is not None, f"Данные профиля с id: {profile_id} не найдены в базе данных."
+        # Распаковываем полученные данные
+        db_inn, db_surname, db_first_name, db_last_name, db_payment_account, db_bic, db_bank_title, db_license, db_address, db_phone, db_email, db_state = profile_data
+        # Проверяем каждое значение на совпадение
+        assert db_inn == inn, f"ИНН не совпадает. Ожидалось: {inn}, но получено: {db_inn}"
+        assert db_surname == surname, f"Фамилия не совпадает. Ожидалось: {surname}, но получено: {db_surname}"
+        assert db_first_name == first_name, f"Имя не совпадает. Ожидалось: {first_name}, но получено: {db_first_name}"
+        assert db_last_name == last_name, f"Отчество не совпадает. Ожидалось: {last_name}, но получено: {db_last_name}"
+        assert db_payment_account == payment_account, f"Расчетный счет не совпадает. Ожидалось: {payment_account}, но получено: {db_payment_account}"
+        assert db_bic == bic, f"БИК не совпадает. Ожидалось: {bic}, но получено: {db_bic}"
+        assert db_bank_title == bank_title, f"Название банка не совпадает. Ожидалось: {bank_title}, но получено: {db_bank_title}"
+        assert db_license == license, f"Лицензия не совпадает. Ожидалось: {license}, но получено: {db_license}"
+        assert db_address == address, f"Адрес не совпадает. Ожидалось: {address}, но получено: {db_address}"
+        assert db_phone == phone, f"Телефон не совпадает. Ожидалось: {phone}, но получено: {db_phone}"
+        assert db_email == email, f"Email не совпадает. Ожидалось: {email}, но получено: {db_email}"
+        assert db_state == state, f"Статус не совпадает. Ожидалось: {state}, но получено: {db_state}"
+
+    
+    @allure.step("Проверка, что поля у Самозанятого неактивны")
+    def check_operator_self_inactive_fields(self):
+        with allure.step("Проверка, что поле 'Самозанятый Фамилия' неактивно"):
+            self.check_element_disabled_by_xpath(ALL_LOCATORS['Самозанятый Фамилия'])
+        with allure.step("Проверка, что поле 'Самозанятый Имя' неактивно"):
+            self.check_element_disabled_by_xpath(ALL_LOCATORS['Самозанятый Имя'])
+        with allure.step("Проверка, что поле 'Самозанятый Отчество' неактивно"):
+            self.check_element_disabled_by_xpath(ALL_LOCATORS['Самозанятый Отчество'])
+        with allure.step("Проверка, что поле 'Самозанятый Р. / счёт' неактивно"):
+            self.check_element_disabled_by_xpath(ALL_LOCATORS['Самозанятый Р. / счёт'])
+        with allure.step("Проверка, что поле 'Самозанятый БИК' неактивно"):
+            self.check_element_disabled_by_xpath(ALL_LOCATORS['Самозанятый БИК'])
+        with allure.step("Проверка, что поле 'Самозанятый Банк' неактивно"):
+            self.check_element_disabled_by_xpath(ALL_LOCATORS['Самозанятый Банк'])
+        with allure.step("Проверка, что поле 'Самозанятый Номер справки' неактивно"):
+            self.check_element_disabled_by_xpath(ALL_LOCATORS['Самозанятый Номер справки'])
+    
+
+    @allure.step("Проверка, что поля и кнопка Сохранить у Самозанятого активны")
+    def check_operator_self_active_fields(self):
+        with allure.step("Проверка, что поле 'Самозанятый Фамилия' активно"):
+            self.check_element_enabled_by_xpath(ALL_LOCATORS['Самозанятый Фамилия'])
+        with allure.step("Проверка, что поле 'Самозанятый Имя' активно"):
+            self.check_element_enabled_by_xpath(ALL_LOCATORS['Самозанятый Имя'])
+        with allure.step("Проверка, что поле 'Самозанятый Отчество' активно"):
+            self.check_element_enabled_by_xpath(ALL_LOCATORS['Самозанятый Отчество'])
+        with allure.step("Проверка, что поле 'Самозанятый Р. / счёт' активно"):
+            self.check_element_enabled_by_xpath(ALL_LOCATORS['Самозанятый Р. / счёт'])
+        with allure.step("Проверка, что поле 'Самозанятый БИК' активно"):
+            self.check_element_enabled_by_xpath(ALL_LOCATORS['Самозанятый БИК'])
+        with allure.step("Проверка, что поле 'Самозанятый Банк' активно"):
+            self.check_element_enabled_by_xpath(ALL_LOCATORS['Самозанятый Банк'])
+        with allure.step("Проверка, что поле 'Самозанятый Номер справки' активно"):
+            self.check_element_enabled_by_xpath(ALL_LOCATORS['Самозанятый Номер справки'])
+
+
+    @allure.step("Проверка state оператора на фронте")
+    def check_operator_self_state_front(self, page: Page, state: str):
+        state_xpath = LOC_SELLER_COMPANY_DATA['STATE самозанятого в данных компании']
+        state_element = page.locator(f'xpath={state_xpath}')
+        state_element.wait_for(state="visible", timeout=120000)
+        actual_state = state_element.text_content()
+        assert state_element.text_content() == state, f"Ожидаемый статус: '{state}', фактический статус: '{actual_state}'"

@@ -1,0 +1,49 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "api"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+
+stages:
+  - test
+
+variables:
+  TAGS: "all"
+  BROWSERS: "--browser chromium --browser firefox --browser webkit"
+  DOCKER_IMAGE: "python:3.11-bookworm"  # Debian Bookworm
+  FALLBACK_IMAGE: "python:3.11-bullseye"
+
+.run_tests_template: &run_tests_config
+  stage: test
+  before_script:
+    - apt-get update && apt-get install -y zip openjdk-17-jdk openjdk-17-jre
+    - wget -O allure-2.25.0.tgz https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz
+    - tar -zxvf allure-2.25.0.tgz -C /opt/ && ln -s /opt/allure-2.25.0/bin/allure /usr/bin/allure
+    - pip install -r requirements.txt
+    - playwright install
+    - playwright install-deps
+  script:
+    - pytest -v -s $BROWSERS -m $TAGS --alluredir allure-results || echo "Tests failed. Skipping allure report generation."
+    - allure generate allure-results -o allure-report   
+    - zip -r allure-results.zip allure-results  
+  artifacts:
+    expire_in: 5 days
+    paths:
+      - allure-results.zip       
+      - allure-report/
+
+
+run_tests:
+  <<: *run_tests_config
+  image: $DOCKER_IMAGE
+  retry:
+    max: 1
+    when: always  
+
+# Резервная задача (запускается только если основная упала)
+run_tests_fallback:
+  <<: *run_tests_config
+  image: $FALLBACK_IMAGE
+  needs: ["run_tests"]
+  rules:
+    - when: on_failure
